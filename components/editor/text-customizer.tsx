@@ -4,7 +4,6 @@ import SliderField from './slider-field';
 import ColorPicker from './color-picker';
 import FontFamilyPicker from './font-picker'; 
 import { Button } from '../ui/button';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import {
   AccordionContent,
   AccordionItem,
@@ -40,26 +39,8 @@ interface TextCustomizerProps {
 const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttributeChange, removeTextSet, duplicateTextSet, userId }) => {
     const [activeControl, setActiveControl] = useState<string | null>(null);
     const [isPaidUser, setIsPaidUser] = useState(false);
-    const supabaseClient = useSupabaseClient();
 
-    useEffect(() => { 
-        const checkUserStatus = async () => {
-            try {
-                const { data: profile, error } = await supabaseClient
-                    .from('profiles')
-                    .select('paid')
-                    .eq('id', userId)
-                    .single();
-
-                if (error) throw error;
-                setIsPaidUser(profile?.paid || false);
-            } catch (error) {
-                console.error('Error checking user status:', error);
-            }
-        };
-
-        checkUserStatus();
-    }, [userId, supabaseClient]);
+    
 
     const controls = [
         { id: 'text', icon: <CaseSensitive size={20} />, label: 'Text' },
@@ -68,11 +49,11 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({ textSet, handleAttribut
         { id: 'position', icon: <Move size={20} />, label: 'Position' },
         { id: 'fontSize', icon: <Text size={20} />, label: 'Size' },
         { id: 'fontWeight', icon: <Bold size={20} />, label: 'Weight' },
-        { id: 'letterSpacing', icon: <AlignHorizontalSpaceAround size={20} />, label: 'Letter spacing', premium: true },
+        { id: 'letterSpacing', icon: <AlignHorizontalSpaceAround size={20} />, label: 'Letter spacing', premium: false },
         { id: 'opacity', icon: <LightbulbIcon size={20} />, label: 'Opacity' },
         { id: 'rotation', icon: <RotateCw size={20} />, label: 'Rotate' },
-        { id: 'tiltX', icon: <ArrowLeftRight size={20} />, label: 'Tilt X (3D effect)', premium: true },
-        { id: 'tiltY', icon: <ArrowUpDown size={20} />, label: 'Tilt Y (3D effect)', premium: true },
+        { id: 'tiltX', icon: <ArrowLeftRight size={20} />, label: 'Tilt X (3D effect)', premium: false },
+        { id: 'tiltY', icon: <ArrowUpDown size={20} />, label: 'Tilt Y (3D effect)', premium: false },
     ];  
 
     const handlePremiumAttributeChange = (attribute: string, value: any) => {

@@ -24,8 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={GeistSans.className}>
-        <SupabaseProvider>
-            <UserProvider>
+            
               <ThemeProvider
                 attribute="class"
                 defaultTheme="light"
@@ -39,8 +38,7 @@ export default function RootLayout({
                   <Toaster />
                 </div>
               </ThemeProvider>
-            </UserProvider>
-        </SupabaseProvider>
+            
       </body>
     </html>
   );
